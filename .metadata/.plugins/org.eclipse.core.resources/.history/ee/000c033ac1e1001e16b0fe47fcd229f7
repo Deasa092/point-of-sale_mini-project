@@ -1,0 +1,7 @@
+package com.prodemy.project.service;
+
+import com.prodemy.project.dto.CategoryDto;
+
+public interface CategoryService {
+	CategoryDto createCategory(CategoryDto categoryDto);
+}

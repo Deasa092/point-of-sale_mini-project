@@ -1,0 +1,30 @@
+package com.prodemy.project.service;
+
+import java.util.List;
+
+import com.prodemy.project.entity.Category;
+import com.prodemy.project.exception.ResourceNotFoundException;
+import com.prodemy.project.repository.CategoryRepository;
+
+public class CategoryService {
+
+	private CategoryRepository categoryRepo;
+	
+	public Category findById(Long id) {
+		return categoryRepo.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Kategori dengan id " + id + " tidak ditemukan"));
+	}
+	
+	public List <Category> findAll(){
+		return categoryRepo.findAll();
+	}
+	
+	public Category create (Category category) {
+		return categoryRepo.save(category);
+	}
+	
+	public void deleteById(Long id) {
+		categoryRepo.deleteById(id);
+	}
+	
+}

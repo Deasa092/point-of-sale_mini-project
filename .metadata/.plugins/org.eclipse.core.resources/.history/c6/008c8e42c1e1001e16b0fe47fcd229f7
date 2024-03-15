@@ -1,0 +1,24 @@
+package com.prodemy.project.service.implement;
+
+import org.springframework.stereotype.Service;
+
+import com.prodemy.project.dto.CategoryDto;
+import com.prodemy.project.entity.Category;
+import com.prodemy.project.mapper.CategoryMapper;
+import com.prodemy.project.repository.CategoryRepository;
+import com.prodemy.project.service.CategoryService;
+
+@Service
+public class CategoryServiceImpl implements CategoryService{
+
+	private CategoryRepository categoryRepository;
+	@Override
+	public CategoryDto createCategory(CategoryDto categoryDto) {
+		
+		Category category = CategoryMapper.mapToCategory(categoryDto);
+		Category savedCategory = categoryRepository.save(category);
+		
+		return CategoryMapper.mapToCategoryDto(savedCategory);
+	}
+
+}

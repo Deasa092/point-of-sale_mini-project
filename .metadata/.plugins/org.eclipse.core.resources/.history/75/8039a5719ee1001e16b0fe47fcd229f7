@@ -1,0 +1,5 @@
+package com.prodemy.project.exception;
+
+public class ResourceNotFoundException {
+
+}

@@ -1,0 +1,28 @@
+package com.prodemy.project.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.prodemy.project.entity.Category;
+
+@Service
+public class CategoryService {
+	@Autowired
+	 private CategoryService categoryRepository;
+	 
+	 public Category findById(Long id) {
+	   return categoryRepository.findById(id);		
+	    }
+	 
+	 public List<Category> findAll(){
+		 return categoryRepository.findAll();
+	 }
+	 public Category create (Category category) {
+		 return categoryRepository.save(category);
+	 }
+
+	
+}

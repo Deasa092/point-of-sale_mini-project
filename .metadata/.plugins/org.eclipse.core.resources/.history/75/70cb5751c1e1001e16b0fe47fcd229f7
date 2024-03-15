@@ -1,0 +1,19 @@
+package com.prodemy.project.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.prodemy.project.entity.Category;
+import com.prodemy.project.repository.CategoryRepository;
+
+@Service
+public interface CategoryService {
+
+	 @Autowired
+	 private CategoryRepository categoryRepository;
+	 
+	 public Category create (@RequestBody Category category) {
+		 return categoryRepository.save(category); 
+	 }
+}

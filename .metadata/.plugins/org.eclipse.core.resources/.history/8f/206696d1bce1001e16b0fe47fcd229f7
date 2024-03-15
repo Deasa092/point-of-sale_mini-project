@@ -1,0 +1,5 @@
+package com.prodemy.project.service.implement;
+
+public class CategoryServiceImpl {
+
+}

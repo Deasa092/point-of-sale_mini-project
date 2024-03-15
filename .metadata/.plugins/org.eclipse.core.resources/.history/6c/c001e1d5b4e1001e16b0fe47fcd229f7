@@ -1,0 +1,46 @@
+package com.prodemy.project.controller;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.prodemy.project.entity.Category;
+import com.prodemy.project.service.CategoryService;
+
+@Controller
+@RequestMapping("/api")
+public class CategoryController {
+	
+	@Autowired
+	private CategoryService categoryService;
+	
+	@GetMapping("/categories")
+	public List<Category> findAll(){
+		return categoryService.findAll();
+	}
+	
+	@PostMapping
+	public Category create(@RequestBody Category category) {
+		return categoryService.create(category);
+	}
+	
+	@GetMapping("/{id}")
+	public Category findById(@RequestBody("id") Long id) {
+		return categoryService.findById(id);
+	}
+	
+	@PutMapping
+	public Category edit(@RequestBody Category category) {
+		return categoryService.edit(category);
+	}
+	
+	@DeleteMapping("/{id}")
+	public void deleteById(@PathVariable("id") Long id) {
+		categoryService.deleteById(id);
+	}
+	
+}

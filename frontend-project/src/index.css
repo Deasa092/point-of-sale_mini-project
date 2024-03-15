@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.header {
+     @apply flex justify-between items-center shadow-md w-full shadow-[#bee3db]
+}
+.title-page {
+     @apply text-3xl p-3 font-semibold text-[#555b6e]
+}
+.search{
+     @apply max-w-48 
+}
+.input{
+     @apply border-2 h-5 p-3 mr-5 rounded-md border-[#6a7085]
+}
+.sort{
+     @apply w-16 border-2 text-center border-[#6a7085] rounded-md mx-3
+}
+.body-card{
+     @apply grid grid-cols-3 gap-2 rounded-md m-3
+}
+.card-produk{
+     @apply max-w-72 max-h-[380px] border-4 border-[#89b0ae] m-3 p-2 rounded-md hover:border-[#0b7c70]
+}
+.title-produk{
+     @apply text-lg max-md:text-base max-md:h-11 text-center my-3 h-14 font-sans overflow-hidden
+}
+.price-produk{
+     @apply text-center md:text-base max-md:text-sm
+}
+
