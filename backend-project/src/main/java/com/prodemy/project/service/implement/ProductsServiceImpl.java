@@ -9,7 +9,7 @@ import com.prodemy.project.model.request.ProductRequest;
 import com.prodemy.project.model.response.ProductDetailResponse;
 import com.prodemy.project.model.response.ProductResponse;
 import com.prodemy.project.repository.ProductsRepository;
-import com.prodemy.project.service.ProductService;
+import com.prodemy.project.service.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,24 +17,22 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
 @Service
-public abstract class ProductServiceImpl implements ProductService {
+public class ProductsServiceImpl implements ProductsService {
+    @Autowired
     private final ProductsRepository productsRepository;
     private final ProductMapper productMapper;
     private final ProductDetailMapper productDetailMapper;
 
     @Autowired
-    public ProductServiceImpl(ProductsRepository productsRepository, ProductMapper productMapper, ProductDetailMapper productDetailMapper ) {
+    public ProductsServiceImpl(ProductsRepository productsRepository, ProductMapper productMapper, ProductDetailMapper productDetailMapper) {
         this.productsRepository = productsRepository;
         this.productMapper = productMapper;
         this.productDetailMapper=productDetailMapper;
     }
 
-
-
     @Override
-    public List<ProductResponse> getAllProduct() {
+    public List<ProductResponse> getAllProducts() {
         List<Products> products = productsRepository.findAll();
 
         return products.stream()
@@ -43,46 +41,7 @@ public abstract class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse getProductById(Integer id) {
-        Products products =productsRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product with id: " + id + " is Not Found"));
-
-        return productMapper.toResponse(products);
-    }
-
-    @Override
-    public ProductDetailResponse getProductDetail(Integer id) {
-        Optional<Products> opsiProduct = productsRepository.findById(id);
-        if (opsiProduct.isPresent()){
-            Products products = opsiProduct.get();
-            return productDetailMapper.toResponse(products);
-        } else {
-            throw new ResourceNotFoundException("Produk dengan id "+id+" tidak ditemukan");
-        }
-    }
-
-
-    @Override
-    public List<ProductResponse> getProductByCategoryId(Integer categoryId) {
-        List<Products> products = productsRepository.findByCategoryId(categoryId);
-        return mapProductsToResponse(products);
-    }
-
-
-    @Override
-    public List<ProductResponse> searchByTitle(String title) {
-        List <Products> products = productsRepository.findByTitle(title);
-        return mapProductsToResponse(products);
-    }
-
-    private List<ProductResponse> mapProductsToResponse(List<Products> products) {
-        return products.stream()
-                .map(productMapper::toResponse)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public ProductResponse createProduct(ProductRequest request) {
+    public ProductResponse createNewProduct(ProductRequest request) {
         Products products = productMapper.toEntity(request);
         products = productsRepository.save(products);
 
@@ -90,7 +49,7 @@ public abstract class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse updateProduct(Integer id, ProductRequest request) {
+    public ProductResponse updateProductById(Integer id, ProductRequest request) {
         Products existingProduct = productsRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category with id: " + id + " is Not Found"));
 
@@ -103,19 +62,42 @@ public abstract class ProductServiceImpl implements ProductService {
             category.setId(request.getCategory_id());
             existingProduct.setCategory(category);
         }
-         existingProduct = productsRepository.save(existingProduct);
+        existingProduct = productsRepository.save(existingProduct);
         return productMapper.toResponse(existingProduct);
     }
 
     @Override
-    public void deleteProduct(Integer id) {
+    public void deleteProductById(Integer id) {
         Products product = productsRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
         productsRepository.delete(product);
     }
 
     @Override
-    public List<ProductResponse> searchAndSort(String title, String sortBy, String sortOrder) {
+    public ProductDetailResponse getProductDetailById(Integer id) {
+        Optional<Products> opsiProduct = productsRepository.findById(id);
+        if (opsiProduct.isPresent()){
+            Products products = opsiProduct.get();
+            return productDetailMapper.toResponse(products);
+        } else {
+            throw new ResourceNotFoundException("Produk dengan id "+id+" tidak ditemukan");
+        }
+    }
+
+    @Override
+    public List<ProductResponse> getProductByCategoryId(Integer categoryId) {
+        List<Products> products = productsRepository.findByCategoryId(categoryId);
+        return mapProductsToResponse(products);
+    }
+
+    @Override
+    public List<ProductResponse> getProductBySearchTitle(String title) {
+        List <Products> products = productsRepository.findByTitle(title);
+        return mapProductsToResponse(products);
+    }
+
+    @Override
+    public List<ProductResponse> getProductBySortAndSearch(String title, String sortBy, String sortOrder) {
         List<Products> products = null;
         if (sortBy != null && sortOrder != null) {
             if (sortOrder.equalsIgnoreCase("asc")) {
@@ -132,24 +114,30 @@ public abstract class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponse> findByCategoryIdAndTitleAndSort(Integer categoryId, String title, String sortBy, String sortOrder) {
-        List<Products> products;
-        if ("price".equalsIgnoreCase(sortBy)) {
-            if ("desc".equalsIgnoreCase(sortOrder)) {
-                products = productsRepository.findByCategoryIdAndTitleAndSortByPriceDescending(categoryId, title);
+    public List<ProductResponse> getProductByCategorySortAndSearch(Integer categoryId, String title, String sortBy, String sortOrder) {
+        List <Products> products;
+        if("price".equalsIgnoreCase(sortBy)){
+            if("desc".equalsIgnoreCase(sortOrder)){
+                products=productsRepository.findByCategoryIdAndTitleAndSortByNameDescending(categoryId, title);
             } else {
-                products = productsRepository.findByCategoryIdAndTitleAndSortByPriceAscending(categoryId, title);
+                products = productsRepository.findByCategoryIdAndTitleAndSortByNameAscending(categoryId, title);
             }
         } else if ("name".equalsIgnoreCase(sortBy)) {
-            if ("desc".equalsIgnoreCase(sortOrder)) {
+            if("desc".equalsIgnoreCase(sortOrder)){
                 products = productsRepository.findByCategoryIdAndTitleAndSortByNameDescending(categoryId, title);
             } else {
                 products = productsRepository.findByCategoryIdAndTitleAndSortByNameAscending(categoryId, title);
             }
-        } else {
-            // Default sorting by price ascending if sortBy parameter is not provided or invalid
-            products = productsRepository.findByCategoryIdAndTitleAndSortByPriceAscending(categoryId, title);
+        }else {
+            products = productsRepository.findByCategoryIdAndTitleAndSortByNameAscending(categoryId, title);
         }
+        return products.stream()
+                .map(productMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+
+    private List<ProductResponse> mapProductsToResponse(List<Products> products) {
         return products.stream()
                 .map(productMapper::toResponse)
                 .collect(Collectors.toList());

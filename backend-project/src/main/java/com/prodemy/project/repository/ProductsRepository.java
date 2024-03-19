@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+
 public interface ProductsRepository extends JpaRepository <Products, Integer>{
     List<Products> findByCategoryId(Integer categoryId);
     @Query("SELECT p FROM Products p WHERE p.category.id = :categoryId AND LOWER(p.title) LIKE LOWER(CONCAT('%', :title, '%')) ORDER BY p.price ASC")
