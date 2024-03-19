@@ -12,19 +12,20 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
-@RequestMapping("/api/category")
+@RequestMapping("/pos/api")
 public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping
+    @GetMapping ("/listcategory")
     public List <CategoryResponse> getAllCategory(){
         return categoryService.getAllCategory();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/listcategory/{id}")
     public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Integer id){
         try{
             CategoryResponse cResponse = categoryService.getCategoryById(id);
@@ -40,7 +41,8 @@ public class CategoryController {
         CategoryResponse cResponse = categoryService.createCategory(cRequest);
 
         MessageResponse messageResponse = new MessageResponse();
-        messageResponse.setMessage("Kategori Berhasil Ditambahkan");
+        messageResponse.setStatus("ok");
+        messageResponse.setMessage("sukses");
         return ResponseEntity.status(HttpStatus.CREATED).body(messageResponse);
     }
 
@@ -49,7 +51,8 @@ public class CategoryController {
         try{
             CategoryResponse cResponse = categoryService.updateCategory(id, cRequest);
             MessageResponse messageResponse = new MessageResponse();
-            messageResponse.setMessage("Data Berhasil Diedit");
+            messageResponse.setStatus("ok");
+            messageResponse.setMessage("sukses");
             return ResponseEntity.status(HttpStatus.OK).body(messageResponse);
         }
         catch (ResourceNotFoundException ex){

@@ -38,16 +38,6 @@ public class ProductMapper {
         product.setCategory(category);
 
         return product;
-//        Products products = new Products();
-//        products.setTitle(request.getTitle());
-//        products.setPrice(request.getPrice());
-//        products.setImage(request.getImage());
-//
-//        // Membuat objek Category berdasarkan category_id
-//        Category category = categoryRepository.findById(request.getCategory_id())
-//                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + request.getCategory_id()));
-//        products.setCategory(category);
-//        return products;
-
     }
+
 }
