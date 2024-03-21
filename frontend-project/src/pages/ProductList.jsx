@@ -12,7 +12,7 @@ function ProductList() {
     <div className='mx-10'>
      <h1 className='title-page'>List Product</h1>
       {
-        product?.map((product) => (
+        product?.map((product) =F> (
           <div className='grid grid-cols-4 border-b border-gray-500 items-center'>
                <h3 className='title-produk'>{product.id}</h3>
               <img src={product.image} alt={product.title} className='w-24 mx-4' />

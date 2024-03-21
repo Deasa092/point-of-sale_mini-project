@@ -51,7 +51,7 @@ public class ProductsController {
         }
     }
 
-    @GetMapping("/detail/{id}")
+    @GetMapping("/detailproduct/{id}")
     public ResponseEntity <ProductDetailResponse> getProductDetail(@PathVariable Integer id){
         try {
             ProductDetailResponse productDetail = productsService.getProductDetailById(id);
@@ -60,7 +60,7 @@ public class ProductsController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
-    @PostMapping("/add")
+    @PostMapping("/addproduct")
     public ResponseEntity <MessageResponse> createProduct (@RequestBody ProductRequest pRequest){
         ProductResponse pResponse = productsService.createNewProduct(pRequest);
 
@@ -70,7 +70,7 @@ public class ProductsController {
         return ResponseEntity.status(HttpStatus.CREATED).body(messageResponse);
     }
 
-    @PutMapping ("/update/{id}")
+    @PutMapping ("/updateproduct/{id}")
     public ResponseEntity<MessageResponse> updateProduct (@PathVariable Integer id, @RequestBody ProductRequest pRequest) {
         try {
             ProductResponse pResponse = productsService.updateProductById(id, pRequest);
@@ -83,7 +83,7 @@ public class ProductsController {
         }
 
     }
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/deleteproduct/{id}")
     public ResponseEntity <MessageResponse> deleteProduct(@PathVariable Integer id){
         productsService.deleteProductById(id);
         MessageResponse messageResponse = new MessageResponse();

@@ -45,10 +45,10 @@
      @apply cursor-pointer text-[#ef233c] hover:text-[#d90429] text-xl
 }
 .cart-body{
-     @apply flex justify-start items-center my-3 border-b-2 border-[#8d99ae] p-2 rounded-md
+     @apply flex justify-start items-center my-3 border-b-2 border-[#8d99ae] 
 }
 .title-cart{
-     @apply h-7 max-w-[360px] overflow-hidden text-lg font-lato 
+     @apply h-7 max-w-[450px] overflow-hidden text-lg font-lato 
 }
 .table{
      @apply m-5 text-lg
@@ -56,3 +56,4 @@
 .add-btn{
      @apply bg-green-300 px-5 p-3 m-3 text-xl font-lato uppercase w-11/12 cursor-pointer
  }
+ 
